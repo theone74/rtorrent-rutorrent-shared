@@ -18,7 +18,7 @@ fi
 
 # arrange dirs and configs
 mkdir -p /downloads/.rtorrent/session
-mkdir -p /downloads/.rtorrent/watch
+mkdir -p /downloads/watch
 mkdir -p /downloads/.log/rtorrent
 if [ ! -e /downloads/.rtorrent/.rtorrent.rc ]; then
     cp /root/.rtorrent.rc /downloads/.rtorrent/
