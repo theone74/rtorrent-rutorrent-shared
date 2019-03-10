@@ -5,15 +5,23 @@ set -x
 # set rtorrent user and group id
 RT_UID=${USR_ID:=1000}
 RT_GID=${GRP_ID:=1000}
+GRP=rtorrent
+USR=rtorrent
 
 # update uids and gids
 groupadd -g $RT_GID rtorrent
 if [ $? != 0 ]; then
-addgroup -g $RT_GID rtorrent
+	addgroup -g $RT_GID rtorrent
+	if [ $? != 0 ]; then
+		GRP=`getent group ${RT_GID} | awk -F: '{print $1}'`
+	fi
 fi
 useradd -u $RT_UID -g $RT_GID -d /home/rtorrent -m -s /bin/bash rtorrent
 if [ $? != 0 ]; then
-adduser -u $RT_UID -G rtorrent -h /home/rtorrent -D -s /bin/ash rtorrent
+	adduser -u $RT_UID -G $GRP -h /home/rtorrent -D -s /bin/ash rtorrent
+	if [ $? != 0 ]; then
+        USR=`id -u rtorrent`
+    fi
 fi
 
 # arrange dirs and configs
@@ -24,12 +32,11 @@ if [ ! -e /downloads/.rtorrent/.rtorrent.rc ]; then
     cp /root/.rtorrent.rc /downloads/.rtorrent/
 fi
 ln -s /downloads/.rtorrent/.rtorrent.rc /home/rtorrent/
-chown -R rtorrent:rtorrent /downloads/.rtorrent
-chown -R rtorrent:rtorrent /home/rtorrent
-chown rtorrent:rtorrent /downloads/.log/rtorrent
+chown -R $USR:$GRP /downloads/.rtorrent
+chown -R $USR:$GRP /home/rtorrent
+chown $USR:$GRP /downloads/.log/rtorrent
 
 rm -f /downloads/.rtorrent/session/rtorrent.lock
 
 # run
-su -l -c "TERM=xterm rtorrent" rtorrent
-
+su -l -c "TERM=xterm rtorrent" $USR
