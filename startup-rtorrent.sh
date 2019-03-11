@@ -31,7 +31,7 @@ mkdir -p /downloads/.log/rtorrent
 if [ ! -e /downloads/.rtorrent/.rtorrent.rc ]; then
     cp /root/.rtorrent.rc /downloads/.rtorrent/
 fi
-set -i "s/{user_name}/$RT_INIT_USER_NAME/" /downloads/.rtorrent/.rtorrent.rc
+sed -i "s/{user_name}/$RT_INIT_USER_NAME/" /downloads/.rtorrent/.rtorrent.rc
 ln -s /downloads/.rtorrent/.rtorrent.rc /home/rtorrent/
 chown -R $USR:$GRP /downloads/.rtorrent
 chown -R $USR:$GRP /home/rtorrent
