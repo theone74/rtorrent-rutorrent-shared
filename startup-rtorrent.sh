@@ -26,6 +26,7 @@ fi
 
 # arrange dirs and configs
 mkdir -p /downloads/.rtorrent/session
+mkdir -p /downloads/.rtorrent/.log
 mkdir -p /downloads/watch
 mkdir -p /downloads/.log/rtorrent
 if [ ! -e /downloads/.rtorrent/.rtorrent.rc ]; then
@@ -40,4 +41,4 @@ chown $USR:$GRP /downloads/.log/rtorrent
 rm -f /downloads/.rtorrent/session/rtorrent.lock
 
 # run
-su -l -c "TERM=xterm rtorrent" $USR
+su -l -c "TERM=xterm rtorrent" rtorrent
